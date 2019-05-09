@@ -38,7 +38,6 @@ app.get('/', catchAsync(require("./champ_select")));
 app.get("/champ/:id", catchAsync(require("./stat_page")));
 
 
-// use port 5050
-app.listen(80, (req, res) => {
+app.listen(8080, (req, res) => {
     console.info("frontend running on port 80");
 });

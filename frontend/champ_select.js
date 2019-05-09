@@ -1,6 +1,6 @@
 
 
-const teemo = require("../teemo");
+const teemo = require("../lol/teemo");
 const resources = require("./resources");
 
 // homepage is just a big table of champion icons
@@ -15,16 +15,21 @@ module.exports = async (req, res) => {
             <style>
                 html {
                     background-color: #000;
-                    color: #c8aa6e;
+                    color: #fff;
                     font-family: sans;
                 }
+
                 h2 {
 
                 }
 
                 /* should make images scale to fill page for different screen sizes */
                 img {
-                    border: 1px solid #c8aa6e;
+                    border: 2px solid #c8aa6e;
+                    transition: border 0.25s;
+                }
+                img:hover {
+                    border: 2px solid #fff;
                 }
 
             </style>
@@ -35,11 +40,10 @@ module.exports = async (req, res) => {
 
     html += Object.keys(teemo.champNames)
         // alphabetical order
-        //.sort((a, b)=> teemo.champNames[a].toLowerCase().localeCompare(teemo.champNames[b].toLowerCase()))
         .sort((a, b)=> (teemo.champNames[a] > teemo.champNames[b]) - (teemo.champNames[a] < teemo.champNames[b]))
-        // map linked image
+        // linked image
         .map(e => `<a href="/champ/${e}"><img src="${
-            resources.resource_path(`img/champion/${e}.png`)}" title="${teemo.champNames[e]}" /></a>`)
+            resources.resourcePath(`img/champion/${e}.png`)}" title="${teemo.champNames[e]}" /></a>`)
         // newline for readability
         .join('\n');
 
