@@ -12,6 +12,7 @@ function addMatch(id) {
     }
 }
 module.exports.addMatch = addMatch;
+module.exports.getMatches = () => matches;
 
 /* return value
 {

@@ -15,7 +15,7 @@ function addPlayer(id) {
     return 0;
 }
 module.exports.addPlayer = addPlayer;
-
+module.exports.getPlayers = () => players;
 
 // get user match history and deal with their 10 most recent games
 async function processPlayer() {
