@@ -30,7 +30,7 @@ module.exports = async (req, res) => {
                 const w = backend.itemStats[req.params.id][i].w,
                       l = backend.itemStats[req.params.id][i].l;
                 return `<tr>
-                    <td><img src="${resources.resourcePath(`img/item/${i}.png`)}" /></td>
+                    <td><img src="${teemo.ddragon.url}/img/item/${i}.png" title="itemid#${i}" alt="lol item #${i}" /></td>
                     <td><h4>${w}W ${l}L ${Math.round(10000 * w / (w + l)) / 100}%</h4></td>
                 </tr>`}).join('\n')
     }`;

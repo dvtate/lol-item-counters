@@ -37,7 +37,7 @@ app.get('/', catchAsync(require("./champ_select")));
 // get stats for a paticular champion
 app.get("/champ/:id", catchAsync(require("./stat_page")));
 
-
-app.listen(8080, (req, res) => {
+const port = process.env.PORT || 3000;
+app.listen(port, (req, res) => {
     console.info("frontend running on port 80");
 });

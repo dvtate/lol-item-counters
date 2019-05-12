@@ -42,15 +42,14 @@ module.exports = async (req, res) => {
         // alphabetical order
         .sort((a, b)=> (teemo.champNames[a] > teemo.champNames[b]) - (teemo.champNames[a] < teemo.champNames[b]))
         // linked image
-        .map(e => `<a href="/champ/${e}"><img src="${
-            resources.resourcePath(`img/champion/${e}.png`)}" title="${teemo.champNames[e]}" /></a>`)
+        .map(e => `<a href="/champ/${e}"><img src="${teemo.ddragon.url}/img/champion/${teemo.ddragon.champName(e)}.png" title="${teemo.champNames[e]}" /></a>`)
         // newline for readability
         .join('\n');
 
     html += `
         </body>
     </html>
+    `;
 
-    `
     res.send(html);
 }
