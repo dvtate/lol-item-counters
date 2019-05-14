@@ -34,8 +34,13 @@ app.use((err, req, res, next) => {
 // home page, pick champion to get stats from
 app.get('/', catchAsync(require("./champ_select")));
 
+const interface = require("../backend/interface");
+
 // get stats for a paticular champion
 app.get("/champ/:id", catchAsync(require("./stat_page")));
+
+app.get("/api/items", catchAsync((req, res) => res.send(interface.itemStats)));
+app.get("/api/wrs", catchAsync((req, res) => res.send(interface.getWr())));
 
 const port = process.env.PORT || 3000;
 app.listen(port, (req, res) => {

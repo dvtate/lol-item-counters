@@ -35,18 +35,20 @@ async function processPlayer() {
             queue: 420,
             beginTime: Date.now() - (7 * 24 * 60 * 60 * 1000)
         });
+
+        //console.log("matchlist: ", ml);
+        ml.matches.forEach(m => {
+            matches.addMatch(m.gameId);
+        });
+
+        players.push(id);
+        for (let i = 0; i < ml.matches.length; i++)
+            matches.processMatch();
+
     } catch (e) {
         todo_players.push(id);
         console.error(e);
     }
 
-    //console.log("matchlist: ", ml);
-    ml.matches.forEach(m => {
-        matches.addMatch(m.gameId);
-    });
-
-    players.push(id);
-    for (let i = 0; i < ml.matches.length; i++)
-        await matches.processMatch();
 }
 module.exports.processPlayer = processPlayer;

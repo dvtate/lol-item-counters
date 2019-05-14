@@ -80,11 +80,10 @@ async function processMatch() {
         });
 
         timeline.frames.forEach(f => f.events.forEach(e => {
+            const p = participants[e.participantId];
             if (e.type == "ITEM_PURCHASED") {
-                const p = participants[e.participantId];
                 ret.teams[p.teamInd][p.champ].push(e.itemId);
             } else if (e.type == "ITEM_UNDO") {
-                const p = participants[e.participantId];
                 const ind = ret.teams[p.teamInd][p.champ].lastIndexOf(e.beforeId);
                 if (ind < 0) {
                     if (e.beforeId == 0) // undo sell
@@ -96,6 +95,9 @@ async function processMatch() {
                 } else {
                     ret.teams[p.teamInd][p.champ].splice(ind, 1);
                 }
+            } else if (e.type == "ITEM_DESTROYED") {
+                const ind = ret.teams[p.teamInd][p.champ].lastIndexOf(e.itemId);
+                
             }
         }));
 
@@ -106,7 +108,7 @@ async function processMatch() {
         let added = 0;
         match_data.participantIdentities.forEach(p => added += players.addPlayer(p.player.accountId));
         for (let i = 0; i < added; i++)
-            await players.processPlayer();
+            players.processPlayer();
     } catch (e) {
         // maybe i should use a queue...
         console.error("processMatch(): ", e);

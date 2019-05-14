@@ -2,7 +2,8 @@
 
 const teemo = require("../lol/teemo");
 const db = require("./db");
-
+const players = require("./players");
+const matches = require("./matches");
 
 /*
 module.exports.itemStats =
@@ -27,9 +28,20 @@ module.exports.getWr = (champ) => {
         return db.getWrs();
     }
     return ret;
-}
+};
 
-
+module.exports.getCompleted = () => {
+    return {
+        players: players.getPlayers(),
+        matches: matches.getMatches(),
+    };
+};
+module.exports.getTodo = () => {
+    return { // *
+        players: [],
+        matches: [],
+    }
+};
 
 
 // called in matches.js
@@ -83,18 +95,26 @@ module.exports.updateStats = match_data => {
     //Object.keys(match_data.teams[1]).forEach(c => console.log(c));
 
     // update item stats for both teams
-
     Object.keys(match_data.teams[0]).forEach(achamp => {
-        Object.keys(match_data.teams[1]).forEach(echamp =>
+
+        Object.keys(match_data.teams[1]).forEach(echamp => {
+            let items = {}; // only one item per matchup
             match_data.teams[1][echamp].forEach(item =>
-                update_item(achamp, item, match_data.win == 0)));
+                items[item] = true);
+            Object.keys(items).forEach(item =>
+                update_item(achamp, item, match_data.win == 0));
+        })
         db.updateWr(achamp, match_data.win == 1);
     });
 
     Object.keys(match_data.teams[1]).forEach(achamp => {
-        Object.keys(match_data.teams[0]).forEach(echamp =>
+        Object.keys(match_data.teams[0]).forEach(echamp => {
+            let items = {}; // only one item per matchup
             match_data.teams[0][echamp].forEach(item =>
-                update_item(achamp, item, match_data.win == 1)));
+                items[item] = true);
+            Object.keys(items).forEach(item =>
+                update_item(achamp, item, match_data.win == 1));
+        });
         db.updateWr(achamp, match_data.win == 0);
     });
 

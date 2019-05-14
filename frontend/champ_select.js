@@ -36,7 +36,7 @@ module.exports = async (req, res) => {
         </head><body>
         <center>
             <h1>LoL Item Counters<sup style="font-size:50%">Alpha</sup></h1>
-            <h4>${require("../backend/matches").getMatches.length} Matches Analyzed</h4>
+            <h4>${require("../backend/matches").getMatches().length} Matches Analyzed</h4>
         </center><hr/>
     `
 
