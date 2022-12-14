@@ -42,7 +42,7 @@ app.get("/champ/:id", catchAsync(require("./stat_page")));
 app.get("/api/items", catchAsync((req, res) => res.send(interface.itemStats)));
 app.get("/api/wrs", catchAsync((req, res) => res.send(interface.getWr())));
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3005;
 app.listen(port, (req, res) => {
     console.info("frontend running on port 80");
 });

@@ -8,6 +8,8 @@ Object.keys(teemo.champNames).forEach(id => wrs[id] = { w : 0, l: 0 });
 
 // update champion winrate
 function updateWr(champ, win) {
+    if (!wrs[champ])
+	wrs[champ] = { w: 0, l: 0 };
     if (win)
         wrs[champ].w++;
     else

@@ -3,12 +3,14 @@
 const teemo = require("../lol/teemo");
 const resources = require("./resources");
 
+const startDate = new Date();
+
 // homepage is just a big table of champion icons
 //    clicking on champ icon will take user to relevant page for stats
 
 module.exports = async (req, res) => {
     let html = "";
-    html += `
+    html += `<!doctype html>
     <html>
         <head>
             <title>LoL Item Counters</title>
@@ -17,10 +19,6 @@ module.exports = async (req, res) => {
                     background-color: #000;
                     color: #fff;
                     font-family: sans;
-                }
-
-                h2 {
-
                 }
 
                 /* should make images scale to fill page for different screen sizes */
@@ -36,7 +34,7 @@ module.exports = async (req, res) => {
         </head><body>
         <center>
             <h1>LoL Item Counters<sup style="font-size:50%">Alpha</sup></h1>
-            <h4>${require("../backend/matches").getMatches().length} Matches Analyzed</h4>
+            <p>${require("../backend/matches").getMatches().length} matches analyzed since ${startDate.toString()} </p>
         </center><hr/>
     `
 
@@ -49,7 +47,15 @@ module.exports = async (req, res) => {
         // newline for readability
         .join('\n');
 
+    html += ``
+
     html += `
+        <hr/>
+	<h1>API</h1>
+	<ul>
+	<li><a href="/api/items">GET /api/items</a></li>
+	<li><a href="/api/wrs">GET /api/wrs</a></li>
+	</ul>
         </body>
     </html>
     `;

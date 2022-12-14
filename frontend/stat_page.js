@@ -20,7 +20,7 @@ module.exports = async (req, res) => {
     const wr = backend.getWr()[req.params.id];
 
     page += `<table><tr>
-            <td><img src="${resources.resourcePath(`img/champion/${req.params.id}.png`)}" title="${teemo.champNames[req.params.id]}" /></td>
+            <td><img src="${teemo.ddragon.url}/img/champion/${teemo.ddragon.champName(req.params.id)}.png" title="${teemo.champNames[req.params.id]}" /></td>
             <td><h2>${teemo.champNames[req.params.id]}</h2><h4>${wr.w}W ${wr.l}L ${Math.round(10000 * wr.w /( wr.w + wr.l)) / 100}%</h4></td>
         </tr></table><hr>`;
 

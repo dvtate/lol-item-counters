@@ -1,9 +1,10 @@
 const fs = require("fs");
 const Teemo = require("teemojs");
 
+
+// riot api
 const riotAPIToken = fs.readFileSync("riot_api_key.txt").toString().trim();
 module.exports.riot = new Teemo(riotAPIToken);
-
 
 // server names for teemo
 module.exports.serverNames = {
@@ -18,10 +19,8 @@ module.exports.champNames = {};
 for (key in module.exports.serverNames)
     module.exports.serverNames[module.exports.serverNames[key]] = key;
 
-
 // edit when new champs come out
 module.exports.champIDs = {
-
     "aatrox" : 266, "azir" : 268, "akali" : 84,
     "annie" : 1, "tibbers" : 1,
     "anivia" : 34, "egg" : 34, "aniv" : 34,
@@ -29,7 +28,7 @@ module.exports.champIDs = {
     "amumu" : 32, "mumu" : 32,
     "ahri" : 103, "ashe" : 22,
     "aurelionsol" : 136, "asol" : 136,
-
+    "aphelios" : 523, "afelios" : 523,
     "brand" : 63,
     "bard" : 432, "meep" : 432,
     "braum" : 201,
@@ -69,7 +68,7 @@ module.exports.champIDs = {
 
     "karthus" : 30, "karth" : 30,
     "kaisa" : 145, "kai'sa" : 145, "kindred" : 203,
-    "kled" : 240, "kalista" : 429, "karma" : 43, "kayn" : 141, "kennen" : 85,
+    "kled" : 240, "kalista" : 429, "karma" : 43, "kayn" : 141, "kayne" : 141, "kennen" : 85,
     "kassadin" : 38, "kass" : 38,
     "khazix" : 121, "bug" : 121, "zix" : 121, "k6" : 121, "kha" : 121, "kha'zix" : 121,
     "katarina" : 55, "kat" : 55, "kata" : 55,
@@ -119,10 +118,11 @@ module.exports.champIDs = {
     "sivir" : 15, "singed" : 27, "skarner" : 72,
     "sejuani" : 113, "sej" : 113,
     "soraka" : 16, "raka" : 16,
-    "sylas" : 517,
+    "sylas" : 517, "senna" : 235, "sena":235,
+    "set": 875, "sett" : 875,
 
     "talon" : 91, "taliyah" : 163,
-    "tahmkench" : 223, "thamkench" : 223, "taric" : 44,
+    "tahmkench" : 223, "taric" : 44,
     "teemo" : 17, "satan" : 17, "beemo" : 17, "tenmo" : 17,
     "tristana" : 18, "trist" : 18,
     "trundle" : 48, "troll" : 48,
@@ -147,13 +147,16 @@ module.exports.champIDs = {
     "xayah" : 498, "xerath" : 101,
 
     "yorick" : 83,
-    "yasuo" : 157, "yas" : 157, "trashuo" : 157,
+    "yasuo" : 157, "yas" : 157, "trashuo" : 157, "elohell" : 157,
+    "yuumi" : 350, "cat" : 350, "book" : 350,
+    "qiyana" : 246,
 
     "zyra" : 143, "plants" : 143,
     "zac" : 154,
     "zed" : 238, "ripadc" : 238,
     "zoe" : 142,
     "zilean" : 26, "zil" : 26,
+    "lillia" : 876, "lilia" : 876, "lil" : 876,
 
 };
 
@@ -188,7 +191,8 @@ module.exports.champNames = {
     267 : "Nami", 202 : "Jhin", 16 : "Soraka", 45 : "Veigar", 40 : "Janna",
     111 : "Nautilus", 28 : "Evelynn", 79 : "Gragas", 238 : "Zed", 254 : "Vi",
     96 : "Kog'Maw", 103 : "Ahri", 133 : "Quinn", 7 : "LeBlanc", 81 : "Ezreal",
-    555 : "Pyke", 518 : "Neeko", 517 : "Sylas"
+    555 : "Pyke", 518 : "Neeko", 517 : "Sylas", 350 : "Yuumi", 246: "Qiyana",
+    235 : "Senna", 523 : "Aphelios", 875 : "Sett", 876 : "Lillia",
 };
 
 /*
@@ -200,3 +204,109 @@ for (key in module.exports.champIDs)
 // both sides of the dict
 module.exports.champs = Object.assign({}, module.exports.champIDs, module.exports.champNames);
 module.exports.ddragon = require("./data_dragon");
+
+
+module.exports.rankedQueues = {
+    "soloq" : "RANKED_SOLO_5x5",
+    "flexq" : "RANKED_FLEX_SR",
+    "flex"  : "RANKED_FLEX_SR",
+    "3s"    : "RANKED_FLEX_TT",
+    "tt"    : "RANKED_FLEX_TT",
+};
+
+
+function convertRank(rank, division, lp) {
+
+    const ranks = {
+        "IRON"      : 'i',
+        "BRONZE"    : 'b',
+        "SILVER"    : 's',
+        "GOLD"      : 'g',
+        "PLATINUM"  : 'p',
+        "DIAMOND"   : 'd',
+        "MASTER"    : 'm',
+        "GRANDMASTER" : 'gm',
+        "CHALLENGER"  : 'c',
+    };
+
+    const romanNumerals = {  "I" : 1, "II" : 2, "III" : 3, "IV" : 4, };
+
+    return ranks[rank] + (romanNumerals[division] || "") + (lp ? ' ' + lp : "");
+}
+module.exports.convertRank = convertRank;
+
+
+module.exports.champggRoleNames = {
+    "top" : "TOP",
+
+    "mid" : "MIDDLE", "middle" : "MIDDLE",
+
+    "jg" : "JUNGLE", "jungle" : "JUNGLE",
+    "jng" : "JUNGLE", "jung" : "JUNGLE",
+
+    "adc" : "DUO_CARRY", "bot" : "DUO_CARRY",
+    "ad" : "DUO_CARRY", "carry" : "DUO_CARRY",
+    "adcarry" : "DUO_CARRY",
+
+    "sup" : "DUO_SUPPORT", "supp" : "DUO_SUPPORT",
+    "support" : "DUO_SUPPORT", "realcarry" : "DUO_SUPPORT",
+    "egirl" : "DUO_SUPPORT",
+
+    "adcsupport" : "ADCSUPPORT", "adsupp" : "ADCSUPPORT",
+    "synergy" : "SYNERGY"
+}
+
+let lol_version;
+let championByIdCache = {};
+let championJson = {};
+
+module.exports.champData = [];
+
+/**
+* Update our lookup so that we don't have to manually enter it every time they add a new champ lol
+*/
+async function getLatestChampionsDDragon(language = "en_US") {
+    // subtract version numbers b - a
+    function compareVersionNumber(a,b) {
+        a = a.split('.').map(Number);
+        b = b.split('.').map(Number);
+        for (const i in a) {
+            const cmp = b[i]-a[i];
+            if (cmp != 0)
+                return cmp;
+        }
+    }
+
+    let response;
+    const versions = (await fetch("http://ddragon.leagueoflegends.com/api/versions.json").then(async(r) => await r.json()));
+
+    for (const version of versions) {
+        // If we're already up to date, skip it
+        if (lol_version && compareVersionNumber(lol_version, version) <= 0)
+            return;
+
+        response = await fetch(`https://ddragon.leagueoflegends.com/cdn/${version}/data/${language}/champion.json`);
+        if (response.ok) {
+            lol_version = version;
+            break;
+        }
+    }
+
+    // Name => { }
+    const champs = await response.json();
+    module.exports.champData = Object.values(champs.data);
+
+    // Add to cache
+    module.exports.champData.forEach(c => {
+        module.exports.champIDs[c.name.toLowerCase()] = module.exports.champIDs[c.name.toLowerCase()]
+            || Number(c.key);
+        module.exports.champIDs[c.id.toLowerCase()] = module.exports.champIDs[c.id.toLowerCase()]
+            || Number(c.key);
+        module.exports.champNames[Number(c.key)] = module.exports.champNames[Number(c.key)]
+            || c.name;
+    });
+}
+
+// Automatically update champions
+setInterval(getLatestChampionsDDragon, 1000 * 60 * 60 * 4);
+getLatestChampionsDDragon();

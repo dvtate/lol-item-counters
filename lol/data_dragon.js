@@ -1,4 +1,3 @@
-const fetch = require("node-fetch");
 const teemo = require("./teemo");
 
 // runes reforged
@@ -31,13 +30,14 @@ module.exports.champName = (id) => {
         .replace(/[\s\.\']/g, "") // no spaces, apostrphes, or periods
         .replace(/\&.+/, ""); // specifically for nunu
 
-    if (["ChoGath", "LeBlanc", "KhaZix", "VelKoz"].includes(ret))
-        ret = ret.charAt(0).toUpperCase() + ret.slice(1).toLowerCase();
     if (ret == "Wukong")
         return "MonkeyKing";
     if (ret == "Nunu&Willump")
         return "Nunu";
-
+    if (ret === "RenataGlasc")
+	return "Renata";
+    if (['BelVeth', 'VelKoz', "ChoGath", "LeBlanc", "KhaZix"].includes(ret))
+        ret = ret.charAt(0).toUpperCase() + ret.slice(1).toLowerCase();
     return ret;
 }
 

@@ -9,7 +9,9 @@ let todo_matches = [];
 function addMatch(id) {
     if (!todo_matches.includes(id) || !matches.includes(id)) {
         todo_matches.push(id);
+        return 1;
     }
+    return 0;
 }
 module.exports.addMatch = addMatch;
 module.exports.getMatches = () => matches;
@@ -36,27 +38,26 @@ module.exports.getMatches = () => matches;
 or null if there is nothing to do/invalid match
 */
 async function processMatch() {
-    console.log("matches: ", matches.length);
-    console.log("todo_matches: ", todo_matches.length);
+    process.stdout.write("matches: " + matches.length + " todo_matches: " + todo_matches.length + '\r');
 
     if (!todo_matches)
-        return null;
+        return console.log('no matches to process');
 
     const id = todo_matches.pop();
 
     let match_data, timeline;
     try {
-        match_data = await teemo.riot.get("na1", "match.getMatch", id);
-        timeline = await teemo.riot.get("na1", "match.getMatchTimeline", id);
+        match_data = await teemo.riot.get("AMERICAS", "match.getMatch", id);
+        timeline = await teemo.riot.get("AMERICAS", "match.getTimeline", id);
 
         // figure out winning team id, if both/neither is win return null
         const winning_team_id =
-            match_data.teams[0].win == match_data.teams[1] ? null
-            : match_data.teams[0].win == "Win" ? match_data.teams[0].teamId
-            : match_data.teams[1].win == "Win" ? match_data.teams[1].teamId
+            match_data.info.teams[0].win == match_data.info.teams[1] ? null
+            : match_data.info.teams[0].win ? match_data.info.teams[0].teamId
+            : match_data.info.teams[1].win ? match_data.info.teams[1].teamId
             : null;
         if (!winning_team_id) {
-            matches.push(id);
+//            matches.push(id);
             return null;
         }
 
@@ -73,13 +74,13 @@ async function processMatch() {
         };
 
         // load match data into our datastructures
-        match_data.participants.forEach(p => {
+        match_data.info.participants.forEach(p => {
             const teamInd = p.teamId == winning_team_id ? 1 : 0;
             ret.teams[teamInd][p.championId] = [];
             participants[p.participantId] = { champ: p.championId, teamInd: teamInd };
         });
 
-        timeline.frames.forEach(f => f.events.forEach(e => {
+        timeline.info.frames.forEach(f => f.events.forEach(e => {
             const p = participants[e.participantId];
             if (e.type == "ITEM_PURCHASED") {
                 ret.teams[p.teamInd][p.champ].push(e.itemId);
@@ -102,11 +103,14 @@ async function processMatch() {
         }));
 
         // get items
+//	console.log('ret', ret);
         interface.updateStats(ret);
 
         matches.push(id);
         let added = 0;
-        match_data.participantIdentities.forEach(p => added += players.addPlayer(p.player.accountId));
+//	console.log('ps', match_data.metadata.participants);
+        match_data.metadata.participants.forEach(p => added += players.addPlayer(p));
+	//console.log('added', added, 'players');
         for (let i = 0; i < added; i++)
             players.processPlayer();
     } catch (e) {

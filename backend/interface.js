@@ -18,7 +18,7 @@ module.exports.itemStats =
 
 
 module.exports.itemStats = {};
-Object.keys(teemo.champNames).forEach(id => module.exports.itemStats[id] = {});
+setTimeout(() => Object.keys(teemo.champNames).forEach(id => module.exports.itemStats[id] = {}), 1500);
 
 
 module.exports.getWr = (champ) => {
@@ -78,6 +78,8 @@ module.exports.updateStats = match_data => {
     let update_item = (champ, item, win) => {
         if (!update_item_stats_mutex_lock) {
             update_item_stats_mutex_lock = true;
+            if (!module.exports.itemStats[champ])
+		module.exports.itemStats[champ] = {};
             let data = module.exports.itemStats[champ][item] || { w: 0, l: 0 };
             if (win)
                 data.w++;
