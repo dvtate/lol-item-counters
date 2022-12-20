@@ -8,6 +8,8 @@ const startDate = new Date();
 // homepage is just a big table of champion icons
 //    clicking on champ icon will take user to relevant page for stats
 
+// TODO this should be statically generated once per patch
+
 module.exports = async (req, res) => {
     let html = "";
     html += `<!doctype html>

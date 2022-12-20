@@ -1,9 +1,10 @@
 const fs = require("fs");
 const Teemo = require("teemojs");
 
-const riotAPIToken = fs.readFileSync("riot_api_key.txt").toString().trim();
-module.exports.riot = new Teemo(riotAPIToken);
+const riotAPIToken = () => fs.readFileSync("riot_api_key.txt").toString().trim();
+module.exports.riot = new Teemo(riotAPIToken());
 
+setInterval(() => { module.exports.riot = new Teemo(riotAPIToken()); }, 1000 * 60 * 25);
 
 // server names for teemo
 module.exports.serverNames = {

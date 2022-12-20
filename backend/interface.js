@@ -45,8 +45,6 @@ module.exports.getTodo = () => {
 
 
 // called in matches.js
-// this may need mutex a proper mutex...
-let update_item_stats_mutex_lock = false; // javascript variables are atomic iirc...
 module.exports.updateStats = match_data => {
     /* accepts
     {
@@ -76,8 +74,6 @@ module.exports.updateStats = match_data => {
 
     // only one win/loss per game
     let update_item = (champ, item, win) => {
-        if (!update_item_stats_mutex_lock) {
-            update_item_stats_mutex_lock = true;
             if (!module.exports.itemStats[champ])
 		module.exports.itemStats[champ] = {};
             let data = module.exports.itemStats[champ][item] || { w: 0, l: 0 };
@@ -86,11 +82,6 @@ module.exports.updateStats = match_data => {
             else
                 data.l++;
             module.exports.itemStats[champ][item] = data;
-            update_item_stats_mutex_lock = false;
-        } else {
-            // wait 10ms for mutex lock to go away (hopefully)
-            setTimeout(update_item, 10, champ, item, win);
-        }
     };
 
     //Object.keys(match_data.teams[0]).forEach(c => console.log(c));
@@ -119,5 +110,4 @@ module.exports.updateStats = match_data => {
         });
         db.updateWr(achamp, match_data.win == 0);
     });
-
 }

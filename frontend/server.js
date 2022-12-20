@@ -7,6 +7,7 @@ const app = express();
 
 const catchAsync = fn => (
     (req, res, next) => {
+        console.log(`request ${req.path} from ${req.ip}`);
         const routePromise = fn(req, res, next);
         if (routePromise.catch)
             routePromise.catch(err => next(err));
@@ -17,6 +18,7 @@ const catchAsync = fn => (
 
 // catch errs
 app.use((err, req, res, next) => {
+    console.error(err);
     switch (err.message) {
         case 'NoCodeProvided':
             return res.status(400).send({
@@ -44,5 +46,5 @@ app.get("/api/wrs", catchAsync((req, res) => res.send(interface.getWr())));
 
 const port = process.env.PORT || 3005;
 app.listen(port, (req, res) => {
-    console.info("frontend running on port 80");
+    console.info("frontend running on port", port);
 });

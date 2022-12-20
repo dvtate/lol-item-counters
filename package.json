@@ -2,5 +2,32 @@
   "dependencies": {
     "express": "^4.18.2",
     "teemojs": "^1.8.0"
-  }
+  },
+  "name": "lol_item_counters",
+  "description": "a web app for finding Items that Counter Champions in League of legends",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dvtate/lol-item-counters.git"
+  },
+  "keywords": [
+    "lol",
+    "league-of-legends",
+    "statistics",
+    "lol-stats",
+    "game-stats",
+    "webapp"
+  ],
+  "author": "dvtate.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dvtate/lol-item-counters/issues"
+  },
+  "homepage": "https://github.com/dvtate/lol-item-counters#readme"
 }
