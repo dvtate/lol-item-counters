@@ -48,9 +48,7 @@ module.exports = async (req, res) => {
         .map(e => `<a href="/champ/${e}"><img src="${teemo.ddragon.url}/img/champion/${teemo.ddragon.champName(e)}.png" title="${teemo.champNames[e]}" /></a>`)
         // newline for readability
         .join('\n');
-
-    html += ``
-
+    
     html += `
         <hr/>
 	<h1>API</h1>
@@ -58,6 +56,8 @@ module.exports = async (req, res) => {
 	<li><a href="/api/items">GET /api/items</a></li>
 	<li><a href="/api/wrs">GET /api/wrs</a></li>
 	</ul>
+	<hr/>
+	<a href="https://github.com/dvtate/lol-item-counters" target="_blank">See on Github</a>
         </body>
     </html>
     `;

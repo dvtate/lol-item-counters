@@ -43,7 +43,7 @@ async function processMatch() {
     if (!todo_matches)
         return console.log('no matches to process');
 
-    const id = todo_matches.pop();
+    const id = todo_matches.shift();
 
     let match_data, timeline;
     try {

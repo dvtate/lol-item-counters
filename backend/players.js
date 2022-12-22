@@ -24,7 +24,7 @@ async function processPlayer() {
     if (!todo_players)
         return console.log("no players to process");
 
-    const id = todo_players.pop();
+    const id = todo_players.shift();
 
     let ml;
     try {
